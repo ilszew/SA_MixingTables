@@ -100,7 +100,7 @@ public:
     }
 
     int get(int key) const {
-        if (capacity() == 0) throw std::out_of_range("Brak elementów w tabeli");
+        if (capacity() == 0) throw std::out_of_range("Brak element?w w tabeli");
         int idx = hashIndex(key);
         int probes = 0;
         while (probes < capacity()) {

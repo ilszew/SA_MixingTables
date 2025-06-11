@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 add_executable(SD_TabliceMieszajace main.cpp
         hashTableAVL.h
         hashTableChaining.h
+        hashTableLinear.h
         randomGenerator.h
         arrayList.h
         timer.h
