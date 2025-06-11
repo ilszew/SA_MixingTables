@@ -1,70 +1,70 @@
 #ifndef HASHTABLE_CHAINING_H
 #define HASHTABLE_CHAINING_H
-
 #include "arrayList.h"
-#include <list>
+#include "singlyLinkedList.h"
 #include <utility>
 #include <iostream>
 
 class HashTableChaining {
 private:
-    ArrayList<std::list<std::pair<int, int>>> table;
+    ArrayList<SinglyLinkedList<std::pair<int, int>>> table;
     int size;
-
+    
     int hashFunction(int key) const {
         return ((key % size) + size) % size;
     }
-
+    
 public:
     explicit HashTableChaining(int tableSize = 101) : size(tableSize) {
         for (int i = 0; i < size; i++) {
-            table.DodajK(std::list<std::pair<int, int>>());
+            table.DodajK(SinglyLinkedList<std::pair<int, int>>());
         }
     }
-
+    
     void insert(int key, int value) {
         int index = hashFunction(key);
-
-        for (auto& pair : table[index]) {
-            if (pair.first == key) {
-                pair.second = value;
+        
+        // Sprawdzamy czy klucz już istnieje
+        for (int i = 0; i < table[index].getSize(); i++) {
+            if (table[index].getAt(i).first == key) {
+                // Aktualizujemy wartość
+                table[index].getAt(i).second = value;
                 return;
             }
         }
-
-        table[index].emplace_back(key, value);
+        
+        table[index].addLast(std::make_pair(key, value));
     }
-
+    
     void remove(int key) {
         int index = hashFunction(key);
 
-        auto it = table[index].begin();
-        while (it != table[index].end()) {
-            if (it->first == key) {
-                table[index].erase(it);
+        for (int i = 0; i < table[index].getSize(); i++) {
+            if (table[index].getAt(i).first == key) {
+                table[index].removeAt(i);
                 return;
             }
-            ++it;
         }
     }
-
+    
     bool find(int key, int& value) {
         int index = hashFunction(key);
-
-        for (const auto& pair : table[index]) {
-            if (pair.first == key) {
-                value = pair.second;
+        
+        for (int i = 0; i < table[index].getSize(); i++) {
+            if (table[index].getAt(i).first == key) {
+                value = table[index].getAt(i).second;
                 return true;
             }
         }
         return false;
     }
-
+    
     void display() {
         for (int i = 0; i < size; i++) {
             std::cout << "Bucket " << i << ": ";
-            for (const auto& pair : table[i]) {
-                std::cout << "(" << pair.first << "," << pair.second << ") ";
+            for (int j = 0; j < table[i].getSize(); j++) {
+                std::cout << "(" << table[i].getAt(j).first << "," 
+                         << table[i].getAt(j).second << ") ";
             }
             std::cout << std::endl;
         }
