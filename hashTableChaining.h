@@ -24,7 +24,6 @@ public:
     void insert(int key, int value) {
         int index = hashFunction(key);
         
-        // Sprawdzamy czy klucz już istnieje
         for (int i = 0; i < table[index].getSize(); i++) {
             if (table[index].getAt(i).first == key) {
                 // Aktualizujemy wartość
